@@ -1,0 +1,10 @@
+getInfoByPromocode:
+  handler: ./src/NameModules/src/functions/getInfoByPromocode/handler.main
+  name: name-modules-hs-rule_engine_by_code
+  events:
+    - http:
+        path: /bh_rule_engine_by_code
+        method: post
+        cors: false
+# name: ${self:custom.func_prefix}-hs-agency-create
+  

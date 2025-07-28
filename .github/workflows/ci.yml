@@ -1,0 +1,15 @@
+name: CI Workflow
+on:
+  workflow_dispatch:
+    inputs:
+        ARTIFACT_NAME:
+            description: 'Artifact name'
+            required: true
+            type: string
+run-name: "CI-[${{inputs.ARTIFACT_NAME}}]-[${{ github.ref_name }}]"            
+jobs:
+  build:
+    uses: the-palace-company/workflows-serverless-deployments/.github/workflows/ci.yml@main
+    with:
+      ARTIFACT_NAME: ${{inputs.ARTIFACT_NAME}}
+    secrets: inherit

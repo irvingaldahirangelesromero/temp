@@ -1,0 +1,58 @@
+service: ${self:custom.func_prefix}
+frameworkVersion: '4'
+plugins:
+  - serverless-python-requirements
+  - serverless-offline
+useDotenv: true
+
+provider:
+  name: aws
+  runtime: python3.10
+  region: us-east-1
+  tags:
+    department: ${env:Department, "ti"}
+    environment: ${env:Stage, "local"}
+    project_name: ${env:ProjectName, "project"}
+    cost_center: ${env:CostCenter, "cost-center"}
+  stage: ${env:Stage, "Stage"}
+  apiGateway:
+    restApiId: ${env:ApiGatewayId,"restApiId"}
+    restApiRootResourceId: ${env:ApiGatewayResourcesId,"restApiRootResourceId"}
+  tracing:
+    lambda: true
+  timeout: 30
+  environment:
+    STAGE: ${env:Stage, "Stage"}
+    AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1'
+    TABLE_NAME_PROXY_HUBSPOT: ${env:TableProxyHubspotName, "TableProxyHubspotName"}
+    HUBSPOT_URL: ${ssm:HUBSPOT, "HUBSPOT"}
+    CLEVER_PROFILE_SERVICES: ${ssm:CLEVER_PROFILE_SERVICES, "CLEVER_PROFILE_SERVICES"}
+    OPERA_PMS_BASE_SERVICE: ${ssm:OPERA_PMS_BASE_SERVICE, "OPERA_PMS_BASE_SERVICE"}
+    SEND_HUBSPOT_STATUS_SQS_URL: ${env:SqshubspotproxyUrl, "SqshubspotproxyUrl"}
+    HUBSPOT_KEY: ${ssm:HubSpot_Crm_Deals_Update,"HubSpot_Crm_Deals_Update"}
+  layers:
+    - ${param:commonLibs, 'commonLibs'}
+  deploymentBucket:
+    name: ${ssm:s3_bucket_deploy_sls, "s3_bucket_deploy_sls"}
+  iam:
+    role: ${env:IamRole, "iamRole"}
+  #vpc:
+  #  securityGroupIds:
+  #    'Fn::Split': [',', ${ssm:securityGroupIds, "SECURITY_GROUP_IDS"}]
+  #  subnetIds:
+  #    'Fn::Split': [',', ${ssm:subnetIds, "SUBNETS_IDS"}]
+
+functions: ${file(./src/index.yml):extension}
+
+package:
+  individually: true
+
+custom:
+  pythonRequirements:
+    dockerizePip: true
+    useStaticCache: true
+    useDownloadCache: true
+  service: proxyindex-service
+  stage: ${env:Stage, "Stage"}
+  func_prefix: ${self:custom.stage}-${self:custom.service}
+

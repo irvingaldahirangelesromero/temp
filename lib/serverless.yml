@@ -1,0 +1,20 @@
+service: hubspot-layer
+frameworkVersion: '3'
+provider:
+  name: aws
+  runtime: python3.10
+  environment:
+    AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1'
+  deploymentBucket:
+    name: ${ssm:s3_bucket_deploy_sls, "s3_bucket_deploy_sls"}
+
+layers:
+  CommonPrHubspot:
+    path: ./
+    name: ${env:Stage, "local"}-hubspot
+
+resources:
+  Outputs:
+    PrHubspotLambdaLayerQualifiedArn:
+      Value:
+        Ref: CommonPrHubspotLambdaLayer

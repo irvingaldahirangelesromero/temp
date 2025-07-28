@@ -1,0 +1,3 @@
+NameModules:
+  - ${file(./src/NameModules/src/functions/getInfoByContextAdapter/index.yml):getInfoByContextAdapter}
+  - ${file(./src/NameModules/src/functions/myMessage/index.yml):myMessage}

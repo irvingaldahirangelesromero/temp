@@ -1,0 +1,8 @@
+myMessage:
+  handler: ./src/NameModules/src/functions/myMessage/handler.main
+  name: world-hs-rule_engine
+  events:
+    - http:
+        method: post
+        path: /behubspot-world
+        cors: false

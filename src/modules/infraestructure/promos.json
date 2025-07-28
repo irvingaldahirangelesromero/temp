@@ -1,0 +1,131 @@
+{
+  "promotions": [
+    {
+      "code": "20USDxNoche",
+      "name": "20 USD por noche para grupos sociales",
+      "rules": [
+        {
+          "name": "Hab 10+ y dentro de contrato",
+          "conditions": [
+            { "field": "habitaciones", "operator": ">=", "value": 10 },
+            { "field": "canal_reserva", "operator": "==", "value": "Contrato" }
+          ],
+          "exceptions": [
+            { "field": "mercado", "operator": "==", "value": "Internacional" },
+            {
+              "field": "fecha_reserva",
+              "operator": ">=",
+              "value": "2026-01-01"
+            } 
+          ],
+          "restrictions": [
+            { "field": "adultos_por_habitacion", "operator": "<", "value": 2 }
+          ]
+        }
+      ],
+      "benefits": [
+        { "description": "Credito de 20 USD por cada noche pagada" }
+      ],
+      "actions": [
+        {
+          "type": "otorgar_credito",
+          "monto_beneficio": 20,
+          "unidad": "USD",
+          "por": "noche_pagada"
+        }
+      ]
+    },
+    {
+      "code": "FreeKidsTeens",
+      "name": "Niños y adolescentes gratis",
+      "rules": [
+        {
+          "name": "Grupo con niños menores + contrato",
+          "conditions": [
+            { "field": "habitaciones", "operator": "<=", "value": 12 },
+            { "field": "canal_reserva", "operator": "==", "value": "Contrato" },
+            { "field": "edad", "operator": "<=", "value": 17 },
+            { "field": "adultos_por_habitacion", "operator": ">=", "value": 1 }
+          ],
+          "exceptions": [
+            { "field": "edad", "operator": "==", "value": 18 }, 
+            { "field": "mercado", "operator": "==", "value": "EEUU" } 
+          ],
+          "restrictions": [
+            { "field": "fecha_reserva", "operator": "<", "value": "2023-01-01" } 
+          ]
+        }
+      ],
+      "benefits": [
+        { "description": "Alojamiento sin cargo adicional para menores < 18" }
+      ],
+      "actions": [{ "type": "descuento", "monto_beneficio": 100 }]
+    },
+    {
+      "code": "ExtraCredito",
+      "name": "Credito adicional para mercado nacional",
+      "rules": [
+        {
+          "name": "Grupo grande México con contrato",
+          "conditions": [
+            { "field": "habitaciones", "operator": ">=", "value": 10 },
+            { "field": "mercado", "operator": "==", "value": "México" },
+            { "field": "canal_reserva", "operator": "==", "value": "Contrato" }
+          ],
+          "exceptions": [
+            { "field": "habitaciones", "operator": ">", "value": 30 }, 
+            { "field": "mercado", "operator": "!=", "value": "México" } 
+          ],
+          "restrictions": [
+            {
+              "field": "fecha_reserva",
+              "operator": "between",
+              "value": ["2023-01-01", "2023-12-31"]
+            } 
+          ]
+        }
+      ],
+      "benefits": [{ "description": "Credito extra de 10 USD por noche" }],
+      "actions": [
+        {
+          "type": "otorgar_credito",
+          "monto_beneficio": 10,
+          "unidad": "USD",
+          "por": "noche_pagada"
+        }
+      ]
+    },
+    {
+      "code": "HonrarNoSolicitadas",
+      "name": "Honrar promociones vigentes no solicitadas",
+      "rules": [
+        {
+          "name": "Vigencia BW/TW",
+          "conditions": [
+            {
+              "field": "fecha_reserva",
+              "operator": ">=",
+              "value": "2021-05-14"
+            },
+            {
+              "field": "fecha_reserva",
+              "operator": "<=",
+              "value": "2023-08-16"
+            }
+          ],
+          "exceptions": [
+            { "field": "sourceId", "operator": "==", "value": "admin_manual" }, 
+            { "field": "promoCode", "operator": "!=", "value": "" } 
+          ],
+          "restrictions": [
+            { "field": "canal_reserva", "operator": "!=", "value": "Contrato" }
+          ]
+        }
+      ],
+      "benefits": [
+        { "description": "Aplicar promoción vigente correspondiente" }
+      ],
+      "actions": [{ "type": "honrar_promocion", "valor": "vigente" }]
+    }
+  ]
+}

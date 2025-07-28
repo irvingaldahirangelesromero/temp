@@ -1,0 +1,10 @@
+getInfoByContextAdapter:
+  handler: ./src/NameModules/src/functions/getInfoByContextAdapter/handler.main
+  name: name-modules-hs-rule_engine
+  events:
+    - http:
+        path: /behubspot.rule_engine
+        method: post
+        cors: false
+
+# name: ${self:custom.func_prefix}-hs-agency-create

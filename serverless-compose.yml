@@ -1,0 +1,13 @@
+services:
+  helloService:
+    path: ./services/helloService
+    params:
+      - commonLibs: "${hubspot-layer.PrHubspotLambdaLayerQualifiedArn}"
+  ruleService:
+    path: ./services/ruleService
+    params:
+      - commonLibs: "${hubspot-layer.PrHubspotLambdaLayerQualifiedArn}"
+  applicationWithContactService:
+    path: ./services/applicationWithContactService
+    params:
+      - commonLibs: "${hubspot-layer.PrHubspotLambdaLayerQualifiedArn}"

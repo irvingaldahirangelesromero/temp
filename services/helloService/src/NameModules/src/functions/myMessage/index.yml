@@ -1,0 +1,8 @@
+myMessage:
+  handler: ./src/NameModules/src/functions/myMessage/handler.main
+  name: world-hs-hello
+  events:
+    - http:
+        method: post
+        path: /behubspot-world
+        cors: false

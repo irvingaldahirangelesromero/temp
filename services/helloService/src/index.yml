@@ -1,0 +1,2 @@
+extension:
+  - ${file(./src/NameModules/src/functions/index.yml):NameModules}

@@ -1,0 +1,11 @@
+boto3
+dependency-injector
+pydantic
+sqlalchemy
+httpx
+python-dotenv
+pandas
+xmltodict
+#apache-airflow
+#redshift_connector
+

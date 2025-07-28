@@ -1,0 +1,38 @@
+{
+  "name": "gs-finance",
+  "version": "1.0.0",
+  "description": "Serverless aws-nodejs-typescript template",
+  "main": "serverless.ts",
+  "scripts": {
+    "start": "sls offline start",
+    "format": "prettier --write '**/*.{ts,tsx}'",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "node": ">=20.9.0"
+  },
+  "dependencies": {
+    "@middy/core": "^2.5.3",
+    "@middy/http-json-body-parser": "^2.5.3",
+    "aws-sdk": "2.1131.0",
+    "crypto": "1.0.1",
+    "dotenv": "^16.0.2",
+    "dynamoose": "^3.1.0",
+    "form-data": "4.0.0",
+    "inversify": "^6.0.1",
+    "joi": "^17.6.0",
+    "json2csv": "^6.0.0-alpha.2",
+    "jwt-decode": "3.1.2",
+    "pdfmake": "^0.2.10",
+    "pg": "8.7.3",
+    "reflect-metadata": "0.1.13",
+    "typeorm": "0.3.6",
+    "typeorm-naming-strategies": "4.1.0"
+  },
+  "author": "The serverless webpack authors (https://github.com/elastic-coders/serverless-webpack)",
+  "license": "MIT",
+  "lint-staged": {
+    "*.js": "eslint --cache --fix",
+    "*.{ts,tsx}": "prettier --write"
+  }
+}
