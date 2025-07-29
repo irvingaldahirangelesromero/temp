@@ -1,3 +1,4 @@
 from typing import Any
-def get(self, key, default=None) -> Any:
-    return self.data.get(key, default)
+
+def get_value_by_key_from_context(context, key: str, default=None) -> Any:
+    return context.data.get(key, default)

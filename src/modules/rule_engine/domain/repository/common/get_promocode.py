@@ -1,3 +1,2 @@
-@staticmethod    
-def get_code(self) -> str:
-    return self.code
+def get_promocode(promo) -> str:
+    return promo.code

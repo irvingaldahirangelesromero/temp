@@ -1,4 +1,4 @@
-from src.modules.rule_engine.dto.common.promo_conflict_dto import PromoConflictDTO
+from src.modules.rule_engine.domain.dto.common.promo_conflict_dto import PromoConflictDTO
 from src.modules.rule_engine.domain.interfaces.i_promo import IPromo
 from typing import List
 

@@ -1,7 +1,7 @@
 
 from src.modules.rule_engine.domain.interfaces.i_criterion import ICriterion
 from src.modules.rule_engine.domain.entities.context import Context
-from src.modules.rule_engine.services.OperatorEvaluator import OperatorEvaluator
+from modules.rule_engine.domain.services.operator_evaluator import OperatorEvaluator
 from typing import Any
 
 class Criteria(ICriterion):

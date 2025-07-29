@@ -1,6 +1,6 @@
 from src.modules.rule_engine.domain.interfaces.i_criterion import ICriterion
 from src.modules.rule_engine.domain.entities.context import Context
-from src.modules.rule_engine.services.evaluation_recorder import EvaluationRecorder
+from src.modules.rule_engine.domain.services.evaluation_recorder import EvaluationRecorder
 
 class CriteriaEvaluator:
     def __init__(self, evaluation_recorder: EvaluationRecorder):

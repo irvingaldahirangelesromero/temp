@@ -1,5 +1,5 @@
-from src.modules.rule_engine.dto.common.evaluation_dto import EvaluationDTO
-from src.modules.rule_engine.services.range_evaluator import RangeEvaluator
+from src.modules.rule_engine.domain.dto.common.evaluation_dto import EvaluationDTO
+from src.modules.rule_engine.domain.services.range_evaluator import RangeEvaluator
 
 class ConflictDetector:
     def __init__(self):

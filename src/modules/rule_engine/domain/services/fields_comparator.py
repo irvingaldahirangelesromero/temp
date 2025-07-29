@@ -1,5 +1,5 @@
 from typing import List
-from src.modules.rule_engine.dto.common.evaluation_dto import EvaluationDTO
+from src.modules.rule_engine.domain.dto.common.evaluation_dto import EvaluationDTO
 
 class FieldsComparator:
     def get_common_fields(self, evals1: List[EvaluationDTO], evals2: List[EvaluationDTO]) -> List[str]:

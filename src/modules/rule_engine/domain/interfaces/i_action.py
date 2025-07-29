@@ -1,4 +1,4 @@
-from typing import Protocol, Dict, Any, List, Tuple
+from typing import Protocol, Dict, Any
 
 class IAction(Protocol):
     @property
@@ -7,6 +7,4 @@ class IAction(Protocol):
     @property
     def params(self) -> Dict[str, Any]: ...
     
-    # def execute(self, applicable_promos: List, total_input: float) -> Tuple[float, float, float]: ...
-
     def __str__(self) -> str: ...

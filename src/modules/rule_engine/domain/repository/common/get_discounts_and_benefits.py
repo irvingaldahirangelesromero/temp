@@ -1,11 +1,10 @@
-from typing import List, Any, Tuple,Dict
+from typing import List, Any, Tuple, Dict
 
-@staticmethod
-def get_discounts_and_benefits(
-    promos_actions: List[Tuple[str, Any]]
-) -> Tuple[List[Tuple[str, float]], Dict[str, Any]]:
+def get_discounts_and_benefits(promos_actions: List[Tuple[str, Any]]) -> Tuple[List[Tuple[str, float]], Dict[str, Any]]:
+
     discounts: List[Tuple[str, float]] = []
     benefits: Dict[str, Any] = {}
+
     for code, action in promos_actions:
         if action.type == "descuento":
             amount = action.params.get("monto_beneficio")
@@ -19,4 +18,5 @@ def get_discounts_and_benefits(
                 "type": action.type,
                 "params": action.params
             })
+
     return discounts, benefits

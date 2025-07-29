@@ -1,4 +1,4 @@
-from src.modules.rule_engine.dto.common.evaluation_dto import EvaluationDTO
+from src.modules.rule_engine.domain.dto.common.evaluation_dto import EvaluationDTO
 
 @staticmethod    
 def string_conflict(self, e1: EvaluationDTO, e2: EvaluationDTO) -> bool:

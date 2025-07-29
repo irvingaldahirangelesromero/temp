@@ -1,7 +1,5 @@
-from typing import Dict,Any,List,Tuple
+from typing import Dict,Any
 from src.modules.rule_engine.domain.interfaces.i_action import IAction
-from src.modules.rule_engine.domain.interfaces.i_promo import IPromo
-from modules.rule_engine.domain.entities.benefit import Benefit 
 
 class Action(IAction):
     def __init__(self, type_: str, params: Dict[str, Any]):
