@@ -1,0 +1,2 @@
+def is_date_range(context_value, min_, max_) -> bool:
+    return ( isinstance(context_value, str) and "-" in context_value and isinstance(min_, str) and "-" in min_ and isinstance(max_, str) and "-" in max_)

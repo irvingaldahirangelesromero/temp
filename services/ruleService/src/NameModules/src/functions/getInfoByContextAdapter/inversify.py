@@ -33,7 +33,7 @@ from src.modules.rule_engine.domain.services.criteria_evaluator import CriteriaE
 # Funciones separadas de ConflictDetector
 from src.modules.rule_engine.domain.services.validations.list_confilct import list_conflict
 from src.modules.rule_engine.domain.services.validations.string_conflict import string_conflict
-from src.modules.rule_engine.domain.services.validations._conflicts_between import conflicts_between
+from modules.rule_engine.domain.services.validations.conflicts_between import conflicts_between
 
 # Funciones puras (RunAction)
 from src.modules.rule_engine.domain.services.run_action import RunAction

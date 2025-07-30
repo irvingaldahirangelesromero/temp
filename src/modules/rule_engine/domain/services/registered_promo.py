@@ -7,3 +7,6 @@ class PromoAppliedRecorder:
 
     def registered_promo(self, promo_code: IPromo):
         self.applied_promos.append(promo_code)
+
+    # def get_applied_promos(self) -> List[IPromo]:
+    #     return self.applied_promos.copy()
