@@ -13,9 +13,8 @@ class GetInfoByContextAdapter:
         self,
         promos_evaluation: PromoEvaluationUseCase = Provide["promo_evaluation_use_case"],
         result_serializer: EvaluationResultDTO = Provide["evaluation_result_serializer"],
-        run_action: Callable = Provide["run_action"],  # inyectar RunAction como función
+        run_action: Callable = Provide["run_action"], 
     ) -> None:
-        # Se inyectan las dependencias necesarias
         self.promos_evaluation = promos_evaluation
         self.result_serializer = result_serializer
         self.run_action = run_action
@@ -26,15 +25,7 @@ class GetInfoByContextAdapter:
             context = Context(port.payload)
             evaluation_recorder, promo_applied_recorder = self.promos_evaluation.execute(context)
             total_value = get_value_by_key_from_context(context, "total")
-            total_result = self.run_action(
-                promo_applied_recorder.get_applied_promos(),
-                total_value
-            )
-            return self.result_serializer.to_dict(
-                applied_promos=promo_applied_recorder.get_applied_promos(),
-                evaluations=evaluation_recorder.to_dict(),
-                total=total_result,
-                only_promo=False
-            )
+            total_result = self.run_action(promo_applied_recorder.get_applied_promos(),total_value)
+            return self.result_serializer.to_dict( applied_promos=promo_applied_recorder.get_applied_promos(), evaluations=evaluation_recorder.to_dict(), total=total_result, only_promo=False)
         return {}
 

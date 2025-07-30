@@ -4,14 +4,7 @@ from src.modules.rule_engine.domain.interfaces.i_promo import IPromo
 from src.modules.rule_engine.domain.dto.common.promo_conflict_dto import PromoConflictDTO
 
 class ConflictsEvaluationUseCase:
-    def __init__(
-        self,
-        get_promo_name,                          # función inyectada
-        get_promo_evaluations_by_promocode,
-        get_common_fields,
-        find_evaluation_by_field,
-        has_conflict
-    ):
+    def __init__(self,get_promo_name, get_promo_evaluations_by_promocode,get_common_fields,find_evaluation_by_field,has_conflict):
         self.get_promo_name = get_promo_name
         self.get_promo_evaluations_by_promocode = get_promo_evaluations_by_promocode
         self.get_common_fields = get_common_fields

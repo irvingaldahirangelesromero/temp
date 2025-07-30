@@ -6,19 +6,11 @@ from src.modules.rule_engine.domain.interfaces.i_criterion import ICriterion
 from src.modules.rule_engine.domain.interfaces.i_criterion import ICriterion
 
 class Rule(IRule):
-    
-    def __init__(
-        self,
-        name: str,
-        conditions: List[ICriterion],
-        exceptions: List[ICriterion],
-        restrictions: List[ICriterion]
-    ):
+    def __init__(self,name: str,conditions: List[ICriterion],exceptions: List[ICriterion],restrictions: List[ICriterion]):
         self.name = name
         self.conditions = conditions
         self.exceptions = exceptions
         self.restrictions = restrictions
-
 
     @property
     def conditions_(self) -> List[ICriterion]:
@@ -36,23 +28,18 @@ class Rule(IRule):
     def __str__(self) -> str:
         return self.name
 
-
     def evaluate(self, context: Context) -> bool:
         for cond in self.conditions: 
             if not cond.evaluate(context):           
                 print(f"condition '{cond}' not is fulfilled : the rule no apply")
-                return False 
-                    
+                return False                    
         for exc in self.exceptions: 
             if exc.evaluate(context):
                 print(f"exception: '{exc}' : the rule no apply")
-                return False
-            
+                return False        
         for restric in self.restrictions: 
             if not restric.evaluate(context):
                 print(f"restriction '{restric}' not is fulfilled : the rule no apply")
                 return False
-
         print(f"\nthe rule: ''{self.name}'' is Aplicable]\n")
         return True    
-     

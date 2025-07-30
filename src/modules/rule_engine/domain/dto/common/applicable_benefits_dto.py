@@ -7,9 +7,6 @@ from src.modules.rule_engine.domain.repository.common.get_promo_benefits import 
 from src.modules.rule_engine.domain.repository.common.get_promo_actions import get_promo_actions
 
 class ApplicableBenefitsDTO:
-    def __init__(self):
-        pass
-
     def to_dict(self, applicable_promos: List[IPromo]) -> Dict[str, Any]:
         applicable_benefits = []
         for promo in applicable_promos:

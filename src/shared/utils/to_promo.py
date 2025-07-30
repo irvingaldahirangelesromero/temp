@@ -11,7 +11,7 @@ from src.shared.utils.to_benefit import BenefitFactory
 class PromoFactory:
     @staticmethod
     def to_promo(data: dict) -> IPromo: 
-        print(f"\nGET DATA FOR BUILD A PROMO INSTANCE WITH CODE: {data["code"]}")
+        print(f"\nGET DATA FOR BUILD A PROMO INSTANCE WITH CODE: {data['code']}")
         code = data["code"] 
         name = data.get("name", "")
         rules_data = data.get("rules",[])

@@ -5,16 +5,7 @@ from src.modules.rule_engine.domain.repository.common.get_promocode import get_p
 from src.shared.utils.exceptions import RuleEngineError
 
 class PromoEvaluationUseCase:
-    def __init__(
-        self,
-        promos_repo,
-        clear_evaluations,
-        clear_applied_promos,
-        add_applied_promo,
-        get_applied_promos,
-        conflicts_evaluation,
-        rules_evaluation
-    ):
+    def __init__(self,promos_repo,clear_evaluations,clear_applied_promos,add_applied_promo,get_applied_promos,conflicts_evaluation,rules_evaluation):
         self.promos_repo = promos_repo
         self.clear_evaluations = clear_evaluations
         self.clear_applied_promos = clear_applied_promos
@@ -26,16 +17,10 @@ class PromoEvaluationUseCase:
     def execute(self, context: Context):
         try:
             print("Component coordination to evaluate promotions")
-
-            # 1. Limpiar evaluaciones y promociones aplicadas previas
             self.clear_evaluations()
             self.clear_applied_promos()
-
-            # 2. Obtener todas las promociones disponibles
             promos: List[IPromo] = self.promos_repo.execute()
             applicable_promos: List[IPromo] = []
-
-            # 3. Evaluar reglas de cada promoción
             for promo in promos:
                 if self.rules_evaluation.execute(promo, context):
                     promo_code = get_promocode(promo)  # Uso del repositorio
@@ -43,13 +28,9 @@ class PromoEvaluationUseCase:
                     self.add_applied_promo(promo)
                     applicable_promos.append(promo)
                 print("--------------------------------------------------")
-
-            # 4. Mostrar promociones aplicables
             print("\nAPPLICABLE PROMOS TO THE CONTEXT:")
             for promo in applicable_promos:
                 print(f"\t• {get_promocode(promo)}")
-
-            # 5. Resolver conflictos entre promociones aplicadas
             conflicts = self.conflicts_evaluation.execute(applicable_promos)
             if conflicts:
                 print("Conflicts detected:")
@@ -60,8 +41,6 @@ class PromoEvaluationUseCase:
                     )
             else:
                 print("\nNO CONFLICTS DETECTED.")
-
-            # 6. Retornar promociones aplicadas
             return self.get_applied_promos()
 
         except RuleEngineError as e:

@@ -17,6 +17,4 @@ class Benefit(IBenefit):
         print(f"applying benefits: {self._description}")
     
     def to_dict(self) -> Dict[str, Any]:
-        return {
-            "benefit": self._description
-        }
+        return { "benefit": self._description }

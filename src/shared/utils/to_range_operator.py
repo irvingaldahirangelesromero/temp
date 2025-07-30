@@ -3,7 +3,6 @@ import math
 
 UMBRAL_EXCLUSION = 1e-9
 
-@staticmethod
 def to_range_operator(operator: str, value: float) -> Tuple[float, float]:
    if operator == "==":
        return (value, value)

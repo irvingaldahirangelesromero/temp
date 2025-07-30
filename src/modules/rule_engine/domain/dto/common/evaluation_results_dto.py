@@ -4,13 +4,7 @@ from src.modules.rule_engine.domain.dto.common.promo_dto import PromoDTO
 from src.modules.rule_engine.domain.repository.common.get_promocode import get_promocode
 
 class EvaluationResultDTO:
-    def to_dict(
-        self,
-        applied_promos: List[IPromo],
-        evaluations: Dict,
-        total: Dict,
-        only_promo: bool
-    ) -> Dict[str, Any]:
+    def to_dict(self,applied_promos: List[IPromo],evaluations: Dict,total: Dict,only_promo: bool) -> Dict[str, Any]:
         applied_promos_dict: List[Dict] = []
         p_code = ""
 
