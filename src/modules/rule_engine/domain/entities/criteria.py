@@ -1,7 +1,7 @@
-
 from src.modules.rule_engine.domain.interfaces.i_criterion import ICriterion
 from src.modules.rule_engine.domain.entities.context import Context
-from modules.rule_engine.domain.services.operator_evaluator import OperatorEvaluator
+from src.modules.rule_engine.domain.services.operator_evaluator import OperatorEvaluator
+from src.modules.rule_engine.domain.repository.common.get_all_value_from_context import extract_value_from_context
 from typing import Any
 
 class Criteria(ICriterion):
@@ -29,7 +29,8 @@ class Criteria(ICriterion):
     def evaluate(self, context: Context) -> bool:
         print(f"\t► Evaluando criterio: {self}")
 
-        context_value = self._extract_value_from_context(context)
+        # Se usa el repositorio extract_value_from_context
+        context_value = extract_value_from_context(self._field, context)
         if context_value is None:
             print(f"\t\t✘ Campo '{self._field}' no encontrado en el contexto")
             return False
@@ -41,4 +42,3 @@ class Criteria(ICriterion):
         except Exception as e:
             print(f"\t\t[Error en evaluación del criterio]: {e}")
             return False
-

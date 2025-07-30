@@ -14,7 +14,7 @@ class ConflictDetector:
 
         if isinstance(e1.value, (int, float)):
             r1 = to_range_operator(e1.operator, float(e1.value))
-            r2 = to_range_operator(e2.operator, float(e2.value))
+            r2 = to_range_operator(e2.operator, float(e2.value)) 
             return not self.range_evaluator.ranges_intersect(r1, r2)
 
         if isinstance(e1.value, str):

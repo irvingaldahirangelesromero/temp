@@ -1,6 +1,7 @@
 from typing import List
 from src.modules.rule_engine.domain.interfaces.i_promo import IPromo
 from src.modules.rule_engine.domain.entities.context import Context
+from src.modules.rule_engine.domain.repository.common.get_promocode import get_promocode
 from src.shared.utils.exceptions import RuleEngineError
 
 class PromoEvaluationUseCase:
@@ -25,31 +26,42 @@ class PromoEvaluationUseCase:
     def execute(self, context: Context):
         try:
             print("Component coordination to evaluate promotions")
+
+            # 1. Limpiar evaluaciones y promociones aplicadas previas
             self.clear_evaluations()
             self.clear_applied_promos()
 
+            # 2. Obtener todas las promociones disponibles
             promos: List[IPromo] = self.promos_repo.execute()
             applicable_promos: List[IPromo] = []
 
+            # 3. Evaluar reglas de cada promoción
             for promo in promos:
                 if self.rules_evaluation.execute(promo, context):
-                    print(f"\nAll rules of the '{promo.get_code()}' promo applied:")
+                    promo_code = get_promocode(promo)  # Uso del repositorio
+                    print(f"\nAll rules of the '{promo_code}' promo applied:")
                     self.add_applied_promo(promo)
                     applicable_promos.append(promo)
                 print("--------------------------------------------------")
 
+            # 4. Mostrar promociones aplicables
             print("\nAPPLICABLE PROMOS TO THE CONTEXT:")
             for promo in applicable_promos:
-                print(f"\t• {promo.get_code()}")
+                print(f"\t• {get_promocode(promo)}")
 
+            # 5. Resolver conflictos entre promociones aplicadas
             conflicts = self.conflicts_evaluation.execute(applicable_promos)
             if conflicts:
                 print("Conflicts detected:")
                 for conflict in conflicts:
-                    print(f"Conflict between '{conflict.promo_1}' and '{conflict.promo_2}' on field '{conflict.field}': {conflict.detail}")
+                    print(
+                        f"Conflict between '{conflict.promo_1}' and '{conflict.promo_2}' "
+                        f"on field '{conflict.field}': {conflict.detail}"
+                    )
             else:
                 print("\nNO CONFLICTS DETECTED.")
 
+            # 6. Retornar promociones aplicadas
             return self.get_applied_promos()
 
         except RuleEngineError as e:
