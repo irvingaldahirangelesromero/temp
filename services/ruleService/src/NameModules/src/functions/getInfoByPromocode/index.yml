@@ -3,7 +3,7 @@ getInfoByPromocode:
   name: name-modules-hs-rule_engine_by_code
   events:
     - http:
-        path: /bh_rule_engine_by_code
+        path: /rule_engine-by_promocode
         method: post
         cors: false
 # name: ${self:custom.func_prefix}-hs-agency-create

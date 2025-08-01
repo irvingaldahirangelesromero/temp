@@ -18,9 +18,9 @@ class GetInfoByPromocodeAdapter:
         self.result_serializer = result_serializer
 
     def execute(self, port: EventDTO) -> dict:
-        print("GET INFO BY PROMOCODE ADAPTER")
+        print("GET INFO BY promocode ADAPTER")
         context = Context(port.payload)
-        promocode = port.payload.get("promoCode")
+        promocode = port.payload.get("promocode")
 
         if not promocode:
             return {}

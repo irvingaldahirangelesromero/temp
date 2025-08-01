@@ -1,9 +1,9 @@
-getInfoByContextAdapter:
-  handler: ./src/NameModules/src/functions/getInfoByContextAdapter/handler.main
+getInfoByContext:
+  handler: ./src/NameModules/src/functions/getInfoByContext/handler.main
   name: name-modules-hs-rule_engine
   events:
     - http:
-        path: /behubspot.rule_engine
+        path: /rule_engine-by_context
         method: post
         cors: false
 

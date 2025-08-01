@@ -15,7 +15,7 @@ absolute_path = os.path.join(BASE_DIR, relative_path)
 
 from datetime import datetime
 from dependency_injector.wiring import inject, Provide
-from src.NameModules.src.functions.getInfoByContextAdapter.inversify import Container
+from src.NameModules.src.functions.getInfoByContext.inversify import Container
 from src.modules.rule_engine.domain.dto.common.event_dto import EventDTO
 from src.modules.rule_engine.adapter.get_info_by_context_adapter import GetInfoByContextAdapter
 from pydantic import ValidationError

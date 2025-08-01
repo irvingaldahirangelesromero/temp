@@ -115,7 +115,7 @@
           ],
           "exceptions": [
             { "field": "sourceId", "operator": "==", "value": "admin_manual" }, 
-            { "field": "promoCode", "operator": "!=", "value": "" } 
+            { "field": "promocode", "operator": "!=", "value": "" } 
           ],
           "restrictions": [
             { "field": "canal_reserva", "operator": "!=", "value": "Contrato" }

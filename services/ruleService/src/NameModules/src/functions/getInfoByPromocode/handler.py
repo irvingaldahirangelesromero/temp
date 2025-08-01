@@ -35,8 +35,9 @@ def main(event, context, adapter: GetInfoByPromocodeAdapter = Provide[Container.
         result = adapter.execute(event_dto)
         response = json.dumps(result, ensure_ascii=False)
         return {
-            "body": "'getInfoByPromocode' \n\n" + response,
-            "headers": {"Content-Type": "application/json"}
+            "statusCode": 200,
+            "headers":    {"Content-Type": "application/json"},
+            "body":       json.dumps(result, ensure_ascii=False),
         }
 
     except ValidationError as e:

@@ -13,7 +13,9 @@ class EvaluationResultDTO:
             applied_promos_dict.append(PromoDTO.to_dict(p))
 
         if only_promo:
-            return {"promocode": p_code}
+            return {
+                "promocode": p_code
+                }
 
         return {
             "applicable_promos": applied_promos_dict,
