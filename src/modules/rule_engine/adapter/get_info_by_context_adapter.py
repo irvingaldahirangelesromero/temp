@@ -1,5 +1,6 @@
 from dependency_injector.wiring import inject, Provide
 from src.modules.rule_engine.domain.dto.common.event_dto import EventDTO
+from src.modules.rule_engine.domain.dto.common.record_evaluationDTO import RecordEvaluationDTO
 from src.modules.rule_engine.domain.entities.context import Context
 from src.modules.rule_engine.useCases.promos_evaluation_use_case import PromoEvaluationUseCase
 from src.modules.rule_engine.domain.dto.common.evaluation_results_dto import EvaluationResultDTO
@@ -25,7 +26,13 @@ class GetInfoByContextAdapter:
             context = Context(port.payload)
             evaluation_recorder, promo_applied_recorder = self.promos_evaluation.execute(context)
             total_value = get_value_by_key_from_context(context, "total")
-            total_result = self.run_action(promo_applied_recorder.get_applied_promos(),total_value)
-            return self.result_serializer.to_dict( applied_promos=promo_applied_recorder.get_applied_promos(), evaluations=evaluation_recorder.to_dict(), total=total_result, only_promo=False)
+            total_result = self.run_action(promo_applied_recorder.applied_promos, total_value)
+            return self.result_serializer.to_dict(
+                applied_promos=promo_applied_recorder.applied_promos,
+                evaluations=RecordEvaluationDTO.to_dict(evaluation_recorder),
+                total=total_result,
+                only_promo=False
+            )
+
         return {}
 

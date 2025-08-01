@@ -1,5 +1,5 @@
 from src.modules.rule_engine.domain.interfaces.i_action import IAction
-from modules.rule_engine.domain.entities.action import Action
+from src.modules.rule_engine.domain.entities.action import Action
 
 class ActionFactory:
     @staticmethod

@@ -1,5 +1,5 @@
 from src.modules.rule_engine.domain.interfaces.i_criterion import ICriterion
-from modules.rule_engine.domain.entities.criteria import Criteria
+from src.modules.rule_engine.domain.entities.criteria import Criteria
 from src.shared.utils.exceptions import InvalidOperatorError, TypeMismatchError
 
 class CriterionFactory:

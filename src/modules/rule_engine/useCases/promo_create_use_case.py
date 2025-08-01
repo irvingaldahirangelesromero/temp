@@ -1,4 +1,4 @@
-from modules.rule_engine.domain.entities.promo import Promo
+from src.modules.rule_engine.domain.entities.promo import Promo
 
 class PromoCreateUseCase:
     def __init__(self):

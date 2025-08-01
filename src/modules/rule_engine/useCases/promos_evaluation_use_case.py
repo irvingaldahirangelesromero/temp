@@ -5,7 +5,7 @@ from src.modules.rule_engine.domain.repository.common.get_promocode import get_p
 from src.shared.utils.exceptions import RuleEngineError
 
 class PromoEvaluationUseCase:
-    def __init__(self,promos_repo,clear_evaluations,clear_applied_promos,add_applied_promo,get_applied_promos,conflicts_evaluation,rules_evaluation):
+    def __init__(self,promos_repo,clear_evaluations,clear_applied_promos,add_applied_promo,get_applied_promos,conflicts_evaluation,rules_evaluation, evaluation_recorder, promo_applied_recorder,):
         self.promos_repo = promos_repo
         self.clear_evaluations = clear_evaluations
         self.clear_applied_promos = clear_applied_promos
@@ -13,6 +13,9 @@ class PromoEvaluationUseCase:
         self.get_applied_promos = get_applied_promos
         self.conflicts_evaluation = conflicts_evaluation
         self.rules_evaluation = rules_evaluation
+        self.evaluation_recorder = evaluation_recorder  
+        self.promo_applied_recorder = promo_applied_recorder
+
 
     def execute(self, context: Context):
         try:
@@ -41,7 +44,7 @@ class PromoEvaluationUseCase:
                     )
             else:
                 print("\nNO CONFLICTS DETECTED.")
-            return self.get_applied_promos()
+            return self.evaluation_recorder, self.promo_applied_recorder
 
         except RuleEngineError as e:
             print(f"[ERROR in PromoEvaluationUseCase] {e}")

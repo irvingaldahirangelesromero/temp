@@ -7,3 +7,6 @@ class PromoAppliedRecorder:
 
     def registered_promo(self, promo_code: IPromo):
         self.applied_promos.append(promo_code)
+
+    def clear(self)->None:
+        self.applied_promos.clear()

@@ -1,5 +1,5 @@
 from typing import List
-from modules.rule_engine.domain.entities.promo import Promo
+from src.modules.rule_engine.domain.entities.promo import Promo
 from src.modules.rule_engine.domain.interfaces.i_rule import IRule
 from src.modules.rule_engine.domain.interfaces.i_action import IAction
 from src.modules.rule_engine.domain.interfaces.i_benefit import IBenefit

@@ -6,6 +6,7 @@ from src.modules.rule_engine.domain.repository.common.get_promo_rules import get
 
 class RulesEvaluationUseCase:
     def __init__(self, criteria_evaluator):
+        # criteria_evaluator es ya una instancia de CriteriaEvaluator
         self.criteria_evaluator = criteria_evaluator
 
     def execute(self, promo: IPromo, context: Context) -> bool:
@@ -16,8 +17,8 @@ class RulesEvaluationUseCase:
         for rule in get_promo_rules(promo):
             print(f"\nRule: {rule}")
 
-            # Evaluar condiciones
-            conditions_ok = self.criteria_evaluator(
+            # 1) Evaluar condiciones
+            conditions_ok = self.criteria_evaluator.execute(
                 label="conditions",
                 criterions=rule.conditions_,
                 context=context,
@@ -26,29 +27,34 @@ class RulesEvaluationUseCase:
                 invert=False
             )
 
-            # Evaluar excepciones solo si las condiciones son válidas
-            exceptions_ok = self.criteria_evaluator(
-                label="exceptions",
-                criterions=rule.exceptions_,
-                context=context,
-                promo_name=promo_name,
-                rule=rule,
-                invert=True
-            ) if conditions_ok else False
+            # 2) Evaluar excepciones (invertimos el resultado)
+            exceptions_ok = False
+            if conditions_ok:
+                exceptions_ok = self.criteria_evaluator.execute(
+                    label="exceptions",
+                    criterions=rule.exceptions_,
+                    context=context,
+                    promo_name=promo_name,
+                    rule=rule,
+                    invert=True
+                )
 
-            # Evaluar restricciones solo si las condiciones y excepciones son válidas
-            restrictions_ok = self.criteria_evaluator(
-                label="restrictions",
-                criterions=rule.restrictions_,
-                context=context,
-                promo_name=promo_name,
-                rule=rule,
-                invert=False
-            ) if conditions_ok and exceptions_ok else False
+            # 3) Evaluar restricciones
+            restrictions_ok = False
+            if conditions_ok and exceptions_ok:
+                restrictions_ok = self.criteria_evaluator.execute(
+                    label="restrictions",
+                    criterions=rule.restrictions_,
+                    context=context,
+                    promo_name=promo_name,
+                    rule=rule,
+                    invert=False
+                )
 
             if not (conditions_ok and exceptions_ok and restrictions_ok):
                 print(f" Rule '{rule}' failed.".upper())
                 return False
 
             print(f" Rule '{rule}' passed.".upper())
+
         return True

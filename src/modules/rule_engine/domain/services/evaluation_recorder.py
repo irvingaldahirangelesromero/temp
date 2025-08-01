@@ -7,3 +7,6 @@ class EvaluationRecorder:
 
     def execute(self, promo: str, rule: str, field: str, operator: str, value: str, result: bool):
         self.evaluations.append(EvaluationDTO(promo, rule, field, operator, value, result))
+
+    def clear(self)->None:
+        self.evaluations.clear()
