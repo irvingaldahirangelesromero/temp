@@ -1,5 +1,3 @@
-# src/containers/container.py
-
 from dependency_injector import containers, providers
 
 # --- Adapters
@@ -44,31 +42,27 @@ from src.modules.rule_engine.domain.dto.common.evaluation_results_dto import Eva
 class Container(containers.DeclarativeContainer):
     config = providers.Configuration()
 
-
-    # 1) Repos de datos
+    # 1) Datos y repositorios
     load_data_repo = providers.Singleton(
-        LoadDataRepository,
-        path_file=config.promo_file_path,
+        LoadDataRepository, path_file=config.promo_file_path
     )
     get_all_promos_repo = providers.Factory(
-        GetAllPromosRepository,
-        data=load_data_repo,
+        GetAllPromosRepository, data=load_data_repo
     )
     get_promo_by_code_repo = providers.Factory(
-        GetPromoByCodeRepository,
-        data=load_data_repo,
+        GetPromoByCodeRepository, data=load_data_repo
     )
 
-    # 2) Servicios con estado
+    # 2) Servicios de estado
     evaluation_recorder    = providers.Singleton(EvaluationRecorder)
     promo_applied_recorder = providers.Singleton(PromoAppliedRecorder)
 
-    # 3) Lambdas para reset/registro
+    # 3) Lambdas para control de evaluaciones/promos
     clear_evaluations = providers.Object(
-        lambda: Container.evaluation_recorder().evaluations.clear()
+        lambda: Container.evaluation_recorder().clear()
     )
     clear_applied_promos = providers.Object(
-        lambda: Container.promo_applied_recorder().applied_promos.clear()
+        lambda: Container.promo_applied_recorder().clear()
     )
     add_applied_promo = providers.Object(
         lambda promo: Container.promo_applied_recorder().registered_promo(promo)
@@ -77,13 +71,12 @@ class Container(containers.DeclarativeContainer):
         lambda: Container.promo_applied_recorder().applied_promos.copy()
     )
 
-    # 4) Funciones puras de consulta de evaluaciones
+    # 4) Conflictos auxiliares
     get_all_evaluations = providers.Object(get_all_evaluations)
     get_promo_evaluations_by_promocode = providers.Object(get_promo_evaluations_by_promocode)
     get_promo_name = providers.Object(get_promo_name)
     find_evaluation_by_field = providers.Object(find_evaluation_by_field)
 
-    # 5) Servicios de detección de conflictos
     conflict_detector = providers.Singleton(ConflictDetector)
     list_conflict     = providers.Object(list_conflict)
     string_conflict   = providers.Object(string_conflict)
@@ -92,7 +85,7 @@ class Container(containers.DeclarativeContainer):
         lambda e1, e2: Container.fields_comparator().get_common_fields(e1, e2)
     )
 
-    # 6) ConflictsEvaluationUseCase
+    # 5) Use cases
     conflicts_evaluation_use_case = providers.Singleton(
         ConflictsEvaluationUseCase,
         get_promo_name=get_promo_name,
@@ -103,8 +96,6 @@ class Container(containers.DeclarativeContainer):
             lambda e1, e2: Container.conflict_detector().has_conflict(e1, e2)
         ),
     )
-
-    # 7) RulesEvaluationUseCase
     criteria_evaluator_service = providers.Factory(
         CriteriaEvaluator,
         evaluation_recorder=evaluation_recorder,
@@ -113,9 +104,6 @@ class Container(containers.DeclarativeContainer):
         RulesEvaluationUseCase,
         criteria_evaluator=criteria_evaluator_service,
     )
-
-    # 8) PromoEvaluationUseCase  ←–––––––––––––––––––––––
-    # Solo los 7 parámetros que tu __init__ acepta
     promo_evaluation_use_case = providers.Singleton(
         PromoEvaluationUseCase,
         promos_repo=get_all_promos_repo,
@@ -125,12 +113,9 @@ class Container(containers.DeclarativeContainer):
         get_applied_promos=get_applied_promos,
         conflicts_evaluation=conflicts_evaluation_use_case,
         rules_evaluation=rules_evaluation_use_case,
-        
         evaluation_recorder=evaluation_recorder,
         promo_applied_recorder=promo_applied_recorder,
     )
-
-    # 9) PromoCodeEvaluationUseCase
     promocode_evaluation_use_case = providers.Singleton(
         PromoCodeEvaluationUseCase,
         promos_repo=get_promo_by_code_repo,
@@ -142,19 +127,21 @@ class Container(containers.DeclarativeContainer):
         promo_applied_recorder=promo_applied_recorder,
     )
 
-    # 10) RunAction y Serializador
+    # 6) Acción y serializador
     run_action = providers.Object(RunAction.execute)
     evaluation_result_serializer = providers.Singleton(EvaluationResultDTO)
 
-    # 11) Adapters
+    # 7) Adapters
     context_adapter = providers.Factory(
         GetInfoByContextAdapter,
         promos_evaluation=promo_evaluation_use_case,
         result_serializer=evaluation_result_serializer,
         run_action=run_action,
+        get_applied_promos=get_applied_promos,
     )
     promo_adapter = providers.Factory(
         GetInfoByPromocodeAdapter,
         promo_code_evaluation=promocode_evaluation_use_case,
         result_serializer=evaluation_result_serializer,
+        get_applied_promos=get_applied_promos,
     )

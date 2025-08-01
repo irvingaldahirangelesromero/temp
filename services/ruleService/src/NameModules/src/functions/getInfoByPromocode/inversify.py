@@ -10,12 +10,20 @@ from src.modules.rule_engine.domain.dto.common.evaluation_results_dto import Eva
 from src.modules.rule_engine.domain.services.criteria_evaluator import CriteriaEvaluator
 from src.modules.rule_engine.domain.services.run_action import RunAction
 
+
 class Container(containers.DeclarativeContainer):
     config = providers.Configuration()
 
     # Repositorios
-    load_data_repo = providers.Singleton(LoadDataRepository, path_file=config.promo_file_path)
-    get_promo_by_code_repo = providers.Factory(GetPromoByCodeRepository, data=load_data_repo)
+    load_data_repo = providers.Singleton(
+        LoadDataRepository,
+        path_file=config.promo_file_path
+    )
+
+    get_promo_by_code_repo = providers.Factory(
+        GetPromoByCodeRepository,
+        data=load_data_repo
+    )
 
     # Servicios con estado
     evaluation_recorder = providers.Singleton(EvaluationRecorder)
@@ -25,10 +33,18 @@ class Container(containers.DeclarativeContainer):
     clear_evaluations = providers.Object(lambda: Container.evaluation_recorder().evaluations.clear())
     clear_applied_promos = providers.Object(lambda: Container.promo_applied_recorder().applied_promos.clear())
     add_applied_promo = providers.Object(lambda promo: Container.promo_applied_recorder().registered_promo(promo))
+    get_applied_promos = providers.Object(lambda: Container.promo_applied_recorder().applied_promos)
 
     # Evaluador de reglas
-    criteria_evaluator_service = providers.Factory(CriteriaEvaluator, evaluation_recorder=evaluation_recorder)
-    rules_evaluation_use_case = providers.Singleton(RulesEvaluationUseCase, criteria_evaluator=criteria_evaluator_service)
+    criteria_evaluator_service = providers.Factory(
+        CriteriaEvaluator,
+        evaluation_recorder=evaluation_recorder
+    )
+
+    rules_evaluation_use_case = providers.Singleton(
+        RulesEvaluationUseCase,
+        criteria_evaluator=criteria_evaluator_service
+    )
 
     # Caso de uso de evaluación por código promocional
     promocode_evaluation_use_case = providers.Singleton(
@@ -44,8 +60,10 @@ class Container(containers.DeclarativeContainer):
 
     # Serializador y adapter
     evaluation_result_serializer = providers.Singleton(EvaluationResultDTO)
+
     promo_adapter = providers.Factory(
         GetInfoByPromocodeAdapter,
         promo_code_evaluation=promocode_evaluation_use_case,
-        result_serializer=evaluation_result_serializer
+        result_serializer=evaluation_result_serializer,
+        get_applied_promos=get_applied_promos  # ✅ Cambio agregado
     )
